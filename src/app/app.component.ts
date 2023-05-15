@@ -10,4 +10,6 @@ import { WelcomeComponent } from './welcome/welcome.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {}
+export class AppComponent {
+title: string = 'app';
+}
