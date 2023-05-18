@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from "./app.component"
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -16,8 +16,20 @@ describe('App: Component', () => {
        fixture.detectChanges();
     });
 
-    it('should create App component',
+    it('should create app component',
     () => {
         expect(component).toBeTruthy();
     });
+
+    it('app component should have tile app',
+    () => {
+        expect(component.title).toContain('app');
+    });
+
+    it('should render tile in h1 tag',
+    () => {
+        let compile = fixture.debugElement.nativeElement;
+        expect(compile.querySelector('h1').textContent).toContain('app works!');
+    });
+
 });

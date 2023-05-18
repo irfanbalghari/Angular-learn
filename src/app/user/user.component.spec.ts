@@ -1,79 +1,80 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { UserComponent } from './user.component';
+import { TestBed, async, fakeAsync, tick, waitForAsync } from "@angular/core/testing";
+import { UserComponent } from "./user.component";
 import { UserService } from "./user.service";
 import { DataService } from "../shared/data.service";
-
-describe('Component: User', () => {
+describe('user component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UserComponent]
     });
   });
 
-  it('should create the app', () => {
+  it('should create the user component', () => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
-
-  it('should use the user name from the service', () => {
+  it('should user username from the service', () => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     let userService = fixture.debugElement.injector.get(UserService);
+
     fixture.detectChanges();
-    expect(userService.user.name).toEqual(app.user.name);
+    expect(userService.user).toEqual(app.user);
   });
 
-  it('should display the user name if user is logged in', () => {
+  it('should display the user name it the user is logged in', () => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     app.isLoggedIn = true;
-    fixture.detectChanges();
     let compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
     expect(compiled.querySelector('p').textContent).toContain(app.user.name);
-  });
+  })
 
-  it('shouldn\'t display the user name if user is not logged in', () => {
+  it('shouldn\'t display the user name it the user is not logged in', () => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
-    fixture.detectChanges();
+    app.isLoggedIn = false;
     let compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
     expect(compiled.querySelector('p').textContent).not.toContain(app.user.name);
-  });
+  })
 
-  it('shouldn\'t fetch data successfully if not called asynchronously', () => {
+  it('shouldn\'t fetch data successfully if not call asynchronously', () => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     let dataService = fixture.debugElement.injector.get(DataService);
     let spy = spyOn(dataService, 'getDetails')
       .and.returnValue(Promise.resolve('Data'));
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     expect(app.data).toBe(undefined);
   });
 
-  it('should fetch data successfully if called asynchronously', async(() => {
+  it('should fetch data successfully if call asynchronously', waitForAsync(() => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     let dataService = fixture.debugElement.injector.get(DataService);
     let spy = spyOn(dataService, 'getDetails')
       .and.returnValue(Promise.resolve('Data'));
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     fixture.whenStable().then(() => {
       expect(app.data).toBe('Data');
     });
   }));
 
-  it('should fetch data successfully if called asynchronously', fakeAsync(() => {
+  it('another way to should fetch data successfully if call asynchronously', fakeAsync(() => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     let dataService = fixture.debugElement.injector.get(DataService);
     let spy = spyOn(dataService, 'getDetails')
       .and.returnValue(Promise.resolve('Data'));
-    fixture.detectChanges();
-    tick();
-    expect(app.data).toBe('Data');
-
+    fixture.autoDetectChanges();
+     tick();
+      expect(app.data).toBe('Data');
   }));
+
 });
+
+
+
